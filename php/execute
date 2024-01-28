@@ -1,0 +1,69 @@
+#!/usr/bin/env php
+<?php
+
+function sendFeatures($features)
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_POST => 1,
+        CURLOPT_POSTFIELDS => json_encode($features),
+        CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+        CURLOPT_URL => "http://localhost:80/receive_features.php",
+        CURLOPT_RETURNTRANSFER => 1,
+    ]);
+
+    curl_exec($curl);
+
+    curl_close($curl);
+}
+
+function readCSV()
+{
+    $file = fopen("dummy.csv", 'r');
+
+    $headers = fgetcsv($file);
+
+    $index = 1;
+    while ($row = fgetcsv($file)) {
+        $item = array_combine($headers, [
+            floatval($row[0]),
+            floatval($row[1]),
+            floatval($row[2]),
+            floatval($row[3]),
+            $row[4],
+        ]);
+
+        if ($index >= 200) sendFeatures($item);
+        if ($index >= 300) sleep(1);
+
+        $index++;
+    }
+
+    fclose($file);
+}
+
+function truncatePoints()
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_POST => 1,
+        CURLOPT_URL => "http://localhost:80/truncate_points.php",
+        CURLOPT_RETURNTRANSFER => 1,
+    ]);
+
+    curl_exec($curl);
+
+    curl_close($curl);
+}
+
+while (true) {
+    truncatePoints();
+
+    sleep(5);
+
+    readCSV();
+
+    sleep(5);
+}
