@@ -3,10 +3,10 @@ import pandas
 import numpy
 
 def loadModel(name = 'autoencoder'):
-    return keras.models.load_model(f'models/{name}.keras')
+    return keras.models.load_model(f'./python/models/{name}.keras')
 
 def loadDataset(filename):
-    return pandas.read_csv(f'data-files/output/{filename}.csv')
+    return pandas.read_csv(f'./python/csv/output/{filename}.csv')
 
 def getFeatures(dataframe):
     return dataframe.drop('timestamp', axis = 1)

@@ -4,7 +4,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
 
 def loadDataset():
-    return pandas.read_csv('../csv/output/data_train.csv')
+    return pandas.read_csv('./pythoncsv/output/data_train.csv')
 
 def trainModel(train_x, train_y, epochs = 20, batch = 4, neurons = 512):
     model = Sequential([
@@ -36,8 +36,8 @@ def evaluateModel(model, test_x, test_y):
     return model.evaluate(test_x, test_y)
 
 def saveModel(model, filename = 'autoencoder'):
-    model.save(f'../models/{filename}.keras')
-    model.save(f'../models/{filename}.h5')
+    model.save(f'./pythonmodels/{filename}.keras')
+    model.save(f'./pythonmodels/{filename}.h5')
 
 dataset = loadDataset()
 
