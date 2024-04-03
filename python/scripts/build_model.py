@@ -1,16 +1,10 @@
 import pandas
-from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
 
 def loadDataset():
     return pandas.read_csv('../csv/output/data_train.csv')
-
-def trainTestSplit(dataframe, test_size = 0.2):
-    features = dataframe.drop('timestamp', axis = 1)
-
-    return train_test_split(features, features, test_size = test_size, random_state = 42)
 
 def trainModel(train_x, train_y, epochs = 20, batch = 4, neurons = 512):
     model = Sequential([
@@ -46,14 +40,13 @@ def saveModel(model, filename = 'autoencoder'):
     model.save(f'../models/{filename}.h5')
 
 dataset = loadDataset()
-train_x, test_x, train_y, test_y = trainTestSplit(dataset)
+
+features = dataset.drop('timestamp', axis = 1)
 
 E = 50
 B = 16
 N = 1024
 
-model = trainModel(train_x, train_y, E, B, N)
-results = evaluateModel(model, test_x, test_y)
-saveModel(model, f'autoencoder_{N}_{E}_{B}_test')
+model = trainModel(features, features, E, B, N)
 
-print(results)
+saveModel(model, f'autoencoder_{N}_{E}_{B}_test')
