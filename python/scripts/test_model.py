@@ -16,14 +16,23 @@ def makePredictions(model, features):
 
     return numpy.mean(numpy.square(predictions - features), axis = 1)
 
-from plotly.graph_objects import Layout, Scatter, Figure
-import numpy
+dataset = loadDataset('data_test_no_leak')
+features = getFeatures(dataset)
 
-def normalizeSeries(series, _min, _max):
-    return series
-    series_min = numpy.min(series)
-    series_max = numpy.max(series)
+models = []
 
-    scaled_data = _min + ((series - series_min) * (_max - _min)) / (series_max - series_min)
+for modelName in os.listdir(f'./python/models') if not file.startswith('.'):
+    model = loadModel(modelName)
 
-    return scaled_data
+    reconstructionErrors = makePredictions(model, features)
+
+    maxReconstructionError = max(reconstructionErrors)
+
+    model.append([ modelName, maxReconstructionError ])
+
+bestModel = min(models, key = lambda model: model[1])
+
+print('All models:')
+print(models)
+print('Best model:')
+print(bestModel)
