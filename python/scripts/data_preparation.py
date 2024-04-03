@@ -1,12 +1,8 @@
 import pandas
 import os
 
-print(os.listdir(f'/'))
-print(os.listdir(f'./'))
-print(os.listdir(f'home'))
-
 def loadDataFiles(subdirectory):
-    return [ pandas.read_csv(f'../csv/{subdirectory}/{file}') for file in os.listdir(f'../csv/{subdirectory}') if not file.startswith('.') ]
+    return [ pandas.read_csv(f'./python/csv/{subdirectory}/{file}') for file in os.listdir(f'./python/csv/{subdirectory}') if not file.startswith('.') ]
 
 def transformDataframes(dataframes):
     return [ transformDataframe(dataframe) for dataframe in dataframes ]
@@ -67,7 +63,7 @@ def buildDataframe(features, timestamps):
     return dataframe
 
 def saveDataframe(dataframe, output_name):
-    dataframe.to_csv(f'../csv/output/{output_name}.csv', index = False)
+    dataframe.to_csv(f'./python/csv/output/{output_name}.csv', index = False)
 
 def prepareData(source_dir, output_name):
     dataframes = loadDataFiles(source_dir)
@@ -78,7 +74,7 @@ def prepareData(source_dir, output_name):
     saveDataframe(dataframe, output_name)
 
 def validateDataFile(filename):
-    dataframe = pandas.read_csv(f'../csv/output/{filename}.csv')
+    dataframe = pandas.read_csv(f'./python/csv/output/{filename}.csv')
 
     has_nan_values = dataframe.isna().any().any()
     has_zero_values = (dataframe == 0).any().any()
