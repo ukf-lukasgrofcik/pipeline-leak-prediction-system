@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Data Preparation
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      - name: Data Preparation
-        run: py3 python/scripts/data_preparation.py
+      - run: python3 python/scripts/data_preparation.py
 
-      - name: Archive data
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           name: data
           path: python/csv/output
@@ -28,14 +28,14 @@ jobs:
     name: Training
     needs: data_preparation
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      - name: Build Model
-        run: py3 python/scripts/build_model.py
+      - run: python3 python/scripts/build_model.py
 
-      - name: Archive model
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           name: model
           path: python/models
@@ -45,19 +45,21 @@ jobs:
     name: Evaluation
     needs: training
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      - name: Test Model
-        run: py3 python/scripts/test_model.py
+      - run: python3 python/scripts/test_model.py
 
   deployment:
     runs-on: ubuntu-latest
     name: Deployment
     needs: evaluation
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      - name: List directory
-        run: ls
+      - run: ls
