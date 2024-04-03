@@ -1,9 +1,9 @@
 import pandas
 import os
 
-print(os.listdir(f'~'))
 print(os.listdir(f'/'))
 print(os.listdir(f'./'))
+print(os.listdir(f'home'))
 
 def loadDataFiles(subdirectory):
     return [ pandas.read_csv(f'../csv/{subdirectory}/{file}') for file in os.listdir(f'../csv/{subdirectory}') if not file.startswith('.') ]
