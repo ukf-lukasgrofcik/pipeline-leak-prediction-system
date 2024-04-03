@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  data_preparation:
+    runs-on: ubuntu-latest
+    name: Data Preparation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Data Preparation
+        run: py3 python/scripts/data_preparation.py
+
+      - name: Archive data
+        uses: actions/upload-artifact@v2
+        with:
+          name: data
+          path: python/csv/output
+
+  training:
+    runs-on: ubuntu-latest
+    name: Training
+    needs: data_preparation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Model
+        run: py3 python/scripts/build_model.py
+
+      - name: Archive model
+        uses: actions/upload-artifact@v2
+        with:
+          name: model
+          path: python/models
+
+  evaluation:
+    runs-on: ubuntu-latest
+    name: Evaluation
+    needs: training
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Test Model
+        run: py3 python/scripts/test_model.py
+
+  deployment:
+    runs-on: ubuntu-latest
+    name: Deployment
+    needs: evaluation
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: List directory
+        run: ls
