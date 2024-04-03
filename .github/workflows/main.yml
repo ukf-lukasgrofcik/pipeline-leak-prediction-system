@@ -1,7 +1,8 @@
 name: CI
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - master
 
@@ -38,8 +39,6 @@ jobs:
         with:
           name: model
           path: python/models
-
-
 
   evaluation:
     runs-on: ubuntu-latest
