@@ -38,6 +38,11 @@ jobs:
         with:
           python-version: '3.11.5'
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: data
+          path: python/csv/output
+
       - run: |
           python -m pip install --upgrade pip
           pip install pandas tensorflow==2.14.0
@@ -58,6 +63,11 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.11.5'
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: model
+          path: python/models
 
       - run: |
           python -m pip install --upgrade pip
