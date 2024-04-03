@@ -2,7 +2,7 @@ import pandas
 import os
 
 def loadDataFiles(subdirectory):
-    return [ pandas.read_csv(f'../csv/{subdirectory}/{file}') for file in os.listdir(f'data-files/{subdirectory}') if not file.startswith('.') and file.startswith('train_4') ]
+    return [ pandas.read_csv(f'../csv/{subdirectory}/{file}') for file in os.listdir(f'../csv/{subdirectory}') if not file.startswith('.') ]
 
 def transformDataframes(dataframes):
     return [ transformDataframe(dataframe) for dataframe in dataframes ]
