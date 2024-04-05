@@ -1,6 +1,7 @@
 from tensorflow import keras
 import pandas
 import numpy
+import os
 
 def loadModel(name = 'autoencoder'):
     return keras.models.load_model(f'./python/models/{name}.keras')
