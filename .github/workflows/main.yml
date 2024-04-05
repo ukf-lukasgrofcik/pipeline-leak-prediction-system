@@ -64,12 +64,14 @@ jobs:
         with:
           python-version: '3.11.5'
 
-      - uses: actions/download-artifact@v2
+      - name: Model Artifact
+        uses: actions/download-artifact@v2
         with:
           name: model
           path: python/models
 
-      - uses: actions/download-artifact@v2
+      - name: Data Artifact
+        uses: actions/download-artifact@v2
         with:
           name: data
           path: python/csv/output
