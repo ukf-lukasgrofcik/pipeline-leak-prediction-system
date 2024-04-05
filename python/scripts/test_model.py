@@ -22,7 +22,7 @@ features = getFeatures(dataset)
 
 models = []
 
-for modelName in [ model for model in os.listdir(f'./python/models') if not file.startswith('.') ]:
+for modelName in [ file for file in os.listdir(f'./python/models') if not file.startswith('.') ]:
     model = loadModel(modelName)
 
     reconstructionErrors = makePredictions(model, features)
