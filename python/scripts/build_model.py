@@ -46,17 +46,15 @@ dataset = loadDataset()
 
 features = dataset.drop('timestamp', axis = 1)
 
-E = 50
-B = 16
-N = 1024
+EPOCHS = 50
+BATCH_SIZE = 16
+NEURONS = 1024
+VERSIONS = 1
 
 if not os.path.exists('./python/models'):
     os.makedirs('./python/models')
 
-for modelVersion in range(1, 2):# set to 1, 3
-    model = trainModel(features, features, E, B, N)
+for modelVersion in range(1, VERSIONS + 1):
+    model = trainModel(features, features, EPOCHS, BATCH_SIZE, NEURONS)
 
-    saveModel(model, f'autoencoder_{N}_{E}_{B}_{modelVersion}')
-
-print(os.listdir(f'./python'))
-print(os.listdir(f'./python/models'))
+    saveModel(model, f'autoencoder_{NEURONS}_{EPOCHS}_{BATCH_SIZE}_{modelVersion}')
