@@ -48,6 +48,9 @@ E = 50
 B = 16
 N = 1024
 
+if not os.path.exists('./python/models'):
+    os.makedirs('./python/models')
+
 for modelVersion in range(1, 1):# set to 1, 3
     model = trainModel(features, features, E, B, N)
 
