@@ -4,7 +4,7 @@ import numpy
 import os
 
 def loadModel(name = 'autoencoder'):
-    return keras.models.load_model(f'./python/models/{name}.keras')
+    return keras.models.load_model(f'./python/models/{name}.h5')
 
 def loadDataset(filename):
     return pandas.read_csv(f'./python/csv/output/{filename}.csv')
@@ -22,7 +22,7 @@ features = getFeatures(dataset)
 
 models = []
 
-for modelName in [ file for file in os.listdir(f'./python/models') if not file.startswith('.') ]:
+for modelName in [ file for file in os.listdir('./python/models') if not file.startswith('.') ]:
     model = loadModel(modelName)
 
     reconstructionErrors = makePredictions(model, features)
