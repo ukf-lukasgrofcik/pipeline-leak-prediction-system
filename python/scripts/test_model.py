@@ -29,7 +29,7 @@ for modelName in [ file for file in os.listdir('./python/models') if not file.st
 
     maxReconstructionError = max(reconstructionErrors)
 
-    model.append([ modelName, maxReconstructionError ])
+    models.append([ modelName, maxReconstructionError ])
 
 bestModel = min(models, key = lambda model: model[1])
 
