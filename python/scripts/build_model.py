@@ -7,7 +7,9 @@ import os
 def loadDataset():
     return pandas.read_csv('./python/csv/output/data_train.csv')
 
-def trainModel(train_x, train_y, epochs = 20, batch = 4, neurons = 512):
+def trainModel(features, epochs = 20, batch = 4, neurons = 512):
+    features = features.sample(frac = 1).reset_index(drop = True)
+
     model = Sequential([
         # Encoder
         Sequential([
@@ -29,7 +31,7 @@ def trainModel(train_x, train_y, epochs = 20, batch = 4, neurons = 512):
         EarlyStopping(monitor = 'loss', patience = 5, restore_best_weights = True) # stop when loss starts rising
     ]
 
-    model.fit(train_x, train_y, epochs = epochs, batch_size = batch, shuffle = True, callbacks = callbacks)
+    model.fit(features, features, epochs = epochs, batch_size = batch, shuffle = True, callbacks = callbacks)
 
     return model
 
