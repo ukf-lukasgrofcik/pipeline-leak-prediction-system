@@ -23,7 +23,8 @@ jobs:
 
       - run: python3 python/scripts/data_preparation.py
 
-      - uses: actions/upload-artifact@v2
+      - name: Data Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: data
           path: python/csv/output
@@ -49,12 +50,11 @@ jobs:
 
       - run: python3 python/scripts/build_model.py
 
-      - uses: actions/upload-artifact@v2
+      - name: Model Artifact
+        uses: actions/upload-artifact@v2
         with:
           name: model
           path: python/models
-
-
 
   evaluation:
     runs-on: ubuntu-latest

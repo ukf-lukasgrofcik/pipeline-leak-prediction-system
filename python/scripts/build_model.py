@@ -2,6 +2,7 @@ import pandas
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
+import os
 
 def loadDataset():
     return pandas.read_csv('./python/csv/output/data_train.csv')
@@ -51,3 +52,6 @@ for modelVersion in range(1, 1):# set to 1, 3
     model = trainModel(features, features, E, B, N)
 
     saveModel(model, f'autoencoder_{N}_{E}_{B}_{modelVersion}')
+
+print(os.listdir(f'./python'))
+print(os.listdir(f'./python/models'))
