@@ -4,7 +4,7 @@ import numpy
 import os
 
 def loadModel(name = 'autoencoder'):
-    return keras.models.load_model(f'./python/models/{name}.h5')
+    return keras.models.load_model(f'./python/models/{name}')
 
 def loadDataset(filename):
     return pandas.read_csv(f'./python/csv/output/{filename}.csv')
