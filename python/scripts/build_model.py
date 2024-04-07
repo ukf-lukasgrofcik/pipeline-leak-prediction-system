@@ -47,7 +47,7 @@ E = 50
 B = 16
 N = 1024
 
-for modelVersion in range(1, 3):
+for modelVersion in range(1, 1):# set to 1, 3
     model = trainModel(features, features, E, B, N)
 
     saveModel(model, f'autoencoder_{N}_{E}_{B}_{modelVersion}')
