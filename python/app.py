@@ -15,7 +15,7 @@ def predict():
         return jsonify({ 'error': 'Invalid features' }), 500
 
     # Load autoencoder model
-    path = os.path.join(os.path.dirname(__file__), 'models/autoencoder.h5')
+    path = os.path.join(os.path.dirname(__file__), 'model/autoencoder.h5')
     model = keras.models.load_model(path)
 
     # Make prediction from features

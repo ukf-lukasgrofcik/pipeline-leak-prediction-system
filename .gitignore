@@ -2,4 +2,4 @@ mysql_data
 
 python/.idea
 python/csv/output/*
-#python/models/*
+python/models/*
