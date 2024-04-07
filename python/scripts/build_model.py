@@ -55,6 +55,6 @@ if not os.path.exists('./python/models'):
     os.makedirs('./python/models')
 
 for modelVersion in range(1, VERSIONS + 1):
-    model = trainModel(features, features, EPOCHS, BATCH_SIZE, NEURONS)
+    model = trainModel(features, EPOCHS, BATCH_SIZE, NEURONS)
 
     saveModel(model, f'autoencoder_{NEURONS}_{EPOCHS}_{BATCH_SIZE}_{modelVersion}')
