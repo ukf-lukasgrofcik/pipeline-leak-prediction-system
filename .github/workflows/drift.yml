@@ -1,0 +1,110 @@
+name: DRIFT
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  download-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: train-file
+          url: ${{ config.FILE_DOWNLOAD_URL }}/drift/data_train.csv
+          path: python/csv/drift
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: test-no-leak-file
+          url: ${{ config.FILE_DOWNLOAD_URL }}/drift/data_test_no_leak.csv
+          path: python/csv/drift
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: test-leak-file
+          url: ${{ config.FILE_DOWNLOAD_URL }}/drift/data_test_leak.csv
+          path: python/csv/drift
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: drift-model
+          url: ${{ config.FILE_DOWNLOAD_URL }}/drift/test_leak.csv
+          path: python/csv/drift
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: drift-files
+          path: python/csv/drift
+
+  retraining:
+    runs-on: ubuntu-latest
+    name: Drift retraining
+    needs: data_preparation
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: drift-files
+          path: python/csv/drift
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install pandas tensorflow==2.14.0
+
+      - run: python3 python/scripts/drift_retrain_model.py
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: model
+          path: python/models
+
+  dirft-evaluation:
+    runs-on: ubuntu-latest
+    name: Drift evaluation
+    needs: training
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: drift-files
+          path: python/csv/drift
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: model
+          path: python/models
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install pandas tensorflow==2.14.0 numpy==1.24.3
+
+      - run: python3 python/scripts/drift_test_model.py
+
+#  deployment:
+#    runs-on: ubuntu-latest
+#    name: Deployment
+#    needs: evaluation
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - env:
+#          PRIVATE_KEY: ${{ config.SSH_PRIVATE_KEY }}
+#          SERVER_IP: ${{ config.SERVER_IP }}
+#          GITHUB_REPO: ${{ config.GITHUB_REPO }}
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+#          chmod 600 ~/.ssh/id_rsa
+#          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+#          git clone $GITHUB_REPO

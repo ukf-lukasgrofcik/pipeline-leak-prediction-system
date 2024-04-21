@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui;
+}
+body {
+    background-color: #dfdfef;
+}
+
+.menu {
+    background-color: #5BBCFF;
+    box-shadow: 0 0 8px 0 #888;
+}
+.menu a {
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    height: 100%;
+    padding: 16px 20px;
+    text-decoration: none;
+    transition: background-color .3s ease;
+}
+.menu a:hover {
+    background-color: #dfdfef;
+}
+
+.table {
+    padding: 0 100px;
+    margin-top: 50px;
+}
+
+.table table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #eee;
+}
+.table td, .table th {
+    border: 1px solid #28A7FF;
+    padding: 10px;
+    width: 50%;
+}

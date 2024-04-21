@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui;
+}
+body {
+    background-color: #dfdfef;
+}
+
+.menu {
+    background-color: #5BBCFF;
+    box-shadow: 0 0 8px 0 #888;
+}
+.menu a {
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    height: 100%;
+    padding: 16px 20px;
+    text-decoration: none;
+    transition: background-color .3s ease;
+}
+.menu a:hover {
+    background-color: #28A7FF;
+}
+.chart {
+    display: flex;
+    text-align: center;
+    margin: 25px 50px;
+}
+.chart-table {
+    margin: 25px 50px;
+    height: fit-content;
+}
+.chart-table table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #eee;
+}
+.chart-table td {
+    border: 1px solid #28A7FF;
+    padding: 10px;
+    width: 50%;
+}
+.chart-table svg {
+    max-width: 30px;
+    max-height: 30px;
+}

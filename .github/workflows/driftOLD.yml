@@ -1,0 +1,32 @@
+name: DRIFT
+
+jobs:
+  download-data:
+    ...
+
+  retraining:
+    ...
+
+  dirft-evaluation:
+    ...
+
+  deployment:
+    ...
+
+#  deployment:
+#    runs-on: ubuntu-latest
+#    name: Deployment
+#    needs: evaluation
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - env:
+#          PRIVATE_KEY: ${{ config.SSH_PRIVATE_KEY }}
+#          SERVER_IP: ${{ config.SERVER_IP }}
+#          GITHUB_REPO: ${{ config.GITHUB_REPO }}
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+#          chmod 600 ~/.ssh/id_rsa
+#          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+#          git clone $GITHUB_REPO

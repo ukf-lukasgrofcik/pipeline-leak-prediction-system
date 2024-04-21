@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  data_preparation:
+    runs-on: ubuntu-latest
+    name: Data Preparation
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+
+      - run: |
+            python -m pip install --upgrade pip
+            pip install pandas
+            mkdir python/csv/output
+
+      - run: python3 python/scripts/data_preparation.py
+
+      - name: Data Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: data
+          path: python/csv/output
+
+  training:
+    runs-on: ubuntu-latest
+    name: Training
+    needs: data_preparation
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: data
+          path: python/csv/output
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install pandas tensorflow==2.14.0
+
+      - run: python3 python/scripts/build_model.py
+
+      - name: Model Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: model
+          path: python/models
+
+  evaluation:
+    runs-on: ubuntu-latest
+    name: Evaluation
+    needs: training
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+
+      - name: Data Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: data
+          path: python/csv/output
+
+      - name: Model Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: model
+          path: python/models
+
+      - run: |
+          python -m pip install --upgrade pip
+          pip install pandas tensorflow==2.14.0 numpy==1.24.3
+
+      - run: python3 python/scripts/test_model.py
+
+#  deployment:
+#    runs-on: ubuntu-latest
+#    name: Deployment
+#    needs: evaluation
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - env:
+#          PRIVATE_KEY: ${{ config.SSH_PRIVATE_KEY }}
+#          SERVER_IP: ${{ config.SERVER_IP }}
+#          GITHUB_REPO: ${{ config.GITHUB_REPO }}
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+#          chmod 600 ~/.ssh/id_rsa
+#          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+#          git clone $GITHUB_REPO
